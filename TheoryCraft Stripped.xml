@@ -16,19 +16,19 @@
 	<CheckButton name="TheoryCraftCheckBoxTemplate" inherits="UICheckButtonTemplate" virtual="true">
 		<Scripts>
 			<OnClick>
-				if ( this:GetChecked() ) then
+				if ( self:GetChecked() ) then
 					PlaySound("igMainMenuOptionCheckBoxOn");
 				else
 					PlaySound("igMainMenuOptionCheckBoxOff");
 				end
 			</OnClick>
 			<OnEnter>
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+				if ( self.tooltipText ) then
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
 				end
-				if ( this.tooltipRequirement ) then
-					GameTooltip:AddLine(this.tooltipRequirement, "", 1.0, 1.0, 1.0);
+				if ( self.tooltipRequirement ) then
+					GameTooltip:AddLine(self.tooltipRequirement, "", 1.0, 1.0, 1.0);
 					GameTooltip:Show();
 				end
 			</OnEnter>
@@ -49,7 +49,7 @@
 				PlaySound("igMainMenuOptionCheckBoxOn");
 			</OnClick>
 			<OnLoad> 
-				TheoryCraft_CheckBoxSetText()
+				TheoryCraft_CheckBoxSetText(self)
 			</OnLoad>
 			<OnClick> 
 				TheoryCraft_CheckBoxToggle()
@@ -67,7 +67,7 @@
 		<Size><AbsDimension x="47" y="20"/></Size>
 		<Scripts>
 			<OnLoad>
-				this:SetTextColor(1,1,1)
+				self:SetTextColor(1,1,1)
 			</OnLoad>
 			<OnTextChanged>
 				TheoryCraft_UpdateEditBox()
@@ -98,7 +98,7 @@
 				PlaySound("igMainMenuOptionCheckBoxOn");
 			</OnClick>
 			<OnLoad> 
-				TheoryCraft_CheckBoxSetText()
+				TheoryCraft_CheckBoxSetText(self)
 			</OnLoad>
 			<OnClick> 
 				TheoryCraft_CheckBoxToggle()
@@ -148,7 +148,7 @@
 				TheoryCraft:StopMovingOrSizing()
 			</OnMouseUp>
 			<OnLoad>
-				TheoryCraft_OnLoad()
+				TheoryCraft_OnLoad(self)
 			</OnLoad>
 			<OnEvent>
 				TheoryCraft_OnEvent()
@@ -574,7 +574,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Ar:  ")
+							getglobal(self:GetName().."Label"):SetText("Ar:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -589,7 +589,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Fi:  ")
+							getglobal(self:GetName().."Label"):SetText("Fi:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -604,7 +604,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Na:  ")
+							getglobal(self:GetName().."Label"):SetText("Na:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -619,7 +619,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Fr:  ")
+							getglobal(self:GetName().."Label"):SetText("Fr:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -634,7 +634,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Sh:  ")
+							getglobal(self:GetName().."Label"):SetText("Sh:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -697,14 +697,14 @@
 	<GameTooltip name="TheoryCraftTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
 		<Scripts>
 			<OnLoad>
-				this:SetOwner(UIParent, "ANCHOR_NONE");
+				self:SetOwner(UIParent, "ANCHOR_NONE");
 			</OnLoad>	
 		</Scripts>
 	</GameTooltip>
 	<GameTooltip name="TCTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
 		<Scripts>
 			<OnLoad>
-				this:SetOwner(UIParent, "ANCHOR_NONE");
+				self:SetOwner(UIParent, "ANCHOR_NONE");
 			</OnLoad>	
 		</Scripts>
 	</GameTooltip>

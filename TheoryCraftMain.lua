@@ -385,7 +385,7 @@ function TheoryCraft_ISyncButtonClick(arg1, sButton)
 	TheoryCraft_Data["ISync:ButtonClick"](arg1, sButton)
 end
 
-function TheoryCraft_OnLoad()
+function TheoryCraft_OnLoad(self)
 	if not TheoryCraft_NotStripped then
 		TheoryCraft_Locale.LoadText = string.gsub(TheoryCraft_Locale.LoadText, TheoryCraft_Version, TheoryCraft_Version.." STRIPPED")
 		TheoryCraft_DataVersion = TheoryCraft_DataVersion.." STRIPPED"
@@ -397,8 +397,8 @@ function TheoryCraft_OnLoad()
 	SLASH_TheoryCraft1 = "/theorycraft"
 	SLASH_TheoryCraft2 = "/tc"
 	SlashCmdList["TheoryCraft"] = TheoryCraft_Command
-	this:RegisterEvent("VARIABLES_LOADED")
-	this:RegisterEvent("PLAYER_LOGIN")
+	self:RegisterEvent("VARIABLES_LOADED")
+	self:RegisterEvent("PLAYER_LOGIN")
 	SetDefaults()
 
 	-- Translates and expands out "schoolname" fields
@@ -801,19 +801,19 @@ function TheoryCraft_SetCheckBox(variablename)
 	end
 end
 
-function TheoryCraft_CheckBoxSetText(arg1)
-	local name = this:GetName()
+function TheoryCraft_CheckBoxSetText(self, arg1)
+	local name = self:GetName()
 	name = string.sub(name, 12)
 	if TheoryCraft_CheckButtons[name] == nil then return end
 	if TheoryCraft_CheckButtons[name].hide then
 		for k,v in pairs(TheoryCraft_CheckButtons[name].hide) do
 			if (class == v) or ((v == "STRIPPED") and (not TheoryCraft_NotStripped)) then
-				getglobal(this:GetName()):Disable()
-				getglobal(this:GetName().."Text"):SetTextColor(0.5, 0.5, 0.5)
+				getglobal(self:GetName()):Disable()
+				getglobal(self:GetName().."Text"):SetTextColor(0.5, 0.5, 0.5)
 			end
 		end
 	end
-	getglobal(this:GetName().."Text"):SetText(TheoryCraft_CheckButtons[name].short)
+	getglobal(self:GetName().."Text"):SetText(TheoryCraft_CheckButtons[name].short)
 end
 
 function TheoryCraft_CheckBoxToggle(arg1)
@@ -1124,7 +1124,7 @@ function TheoryCraft_OutfitChange(arg1)
 		local i, i2 = 1
 		local first = true
 		while (true) do
-			spellname, spellrank = GetSpellName(i,BOOKTYPE_SPELL)
+			spellname, spellrank = GetSpellInfo(i,BOOKTYPE_SPELL)
 			if spellname == nil then break end
 			spellrank = tonumber(findpattern(spellrank, "%d+"))
 			if spellrank == nil then spellrank = 0 end

@@ -282,7 +282,7 @@ function TheoryCraft_UpdateOutfitTab()
 		TheoryCraftAddStat("Agility", math.floor(TheoryCraft_GetStat("agility")))
 		TheoryCraftAddStat("Spirit", math.floor(TheoryCraft_GetStat("spirit")))
 	elseif (class == "DRUID") then
-		if UnitManaMax("player") == 100 then
+		if UnitPowerMax("player") == 100 then
 			TheoryCraftAddVital("Attack Power", math.floor(TheoryCraft_GetStat("attackpower")))
 			TheoryCraftAddVital("Crit Chance", round(TheoryCraft_GetStat("meleecritchancereal"), 2).."%")
 			TheoryCraftAddVital("Agi per Crit", round(TheoryCraft_agipercrit, 2))
@@ -685,9 +685,9 @@ function TheoryCraft_ButtonUpdate()
 
 		local tryfirst, trysecond, spelldata
 		if buttontext.type == "SpellBook" then
-			local id = getglobal(this:GetName().."SpellName"):GetText()
-			local id2 = getglobal(this:GetName().."SubSpellName"):GetText()
-			if (not (getglobal(this:GetName().."SpellName"):IsShown())) or (id == nil) then
+			local id = getglobal(self:GetName().."SpellName"):GetText()
+			local id2 = getglobal(self:GetName().."SubSpellName"):GetText()
+			if (not (getglobal(self:GetName().."SpellName"):IsShown())) or (id == nil) then
 				buttontext:Hide()
 				id = nil
 			end
@@ -697,7 +697,7 @@ function TheoryCraft_ButtonUpdate()
 				spelldata = TheoryCraft_GetSpellDataByName(id, id2)
 			end
 		elseif buttontext.type == "GBMiniSpellBook" then
-			local spellname, spellrank = GetSpellName(buttontext.ID, "BOOKTYPE_SPELL");
+			local spellname, spellrank = GetSpellInfo(buttontext.ID, "BOOKTYPE_SPELL");
 			if spellname then
 				spellrank = tonumber(findpattern(spellrank, "%d+"))
 				if spellrank == nil then spellrank = 0 end
@@ -747,24 +747,24 @@ function TheoryCraft_ButtonUpdate()
 				buttontext:SetText(tryfirst)
 				buttontext:SetTextColor(buttontext.colr, buttontext.colg, buttontext.colb)
 				buttontext:Show()
-				if getglobal(this:GetName().."Name") then getglobal(this:GetName().."Name"):Hide() end
+				if getglobal(self:GetName().."Name") then getglobal(self:GetName().."Name"):Hide() end
 				if getglobal(buttontext:GetParent():GetName().."_Rank") then getglobal(buttontext:GetParent():GetName().."_Rank"):Hide() end
 			else
 				trysecond = formattext(spelldata, TheoryCraft_Settings["trysecond"], TheoryCraft_Settings["trysecondsfg"])
 				if trysecond then
 					buttontext:SetText(trysecond)
 					buttontext:SetTextColor(buttontext.colr2, buttontext.colg2, buttontext.colb2)
-					if getglobal(this:GetName().."Name") then getglobal(this:GetName().."Name"):Hide() end
+					if getglobal(self:GetName().."Name") then getglobal(self:GetName().."Name"):Hide() end
 					if getglobal(buttontext:GetParent():GetName().."_Rank") then getglobal(buttontext:GetParent():GetName().."_Rank"):Hide() end
 					buttontext:Show()
 				else
-					if getglobal(this:GetName().."Name") then getglobal(this:GetName().."Name"):Show() end
+					if getglobal(self:GetName().."Name") then getglobal(self:GetName().."Name"):Show() end
 					if getglobal(buttontext:GetParent():GetName().."_Rank") then getglobal(buttontext:GetParent():GetName().."_Rank"):Show() end
 					buttontext:Hide()
 				end
 			end
 		else
-			if getglobal(this:GetName().."Name") then getglobal(this:GetName().."Name"):Show() end
+			if getglobal(self:GetName().."Name") then getglobal(self:GetName().."Name"):Show() end
 			buttontext:Hide()
 		end
 	end

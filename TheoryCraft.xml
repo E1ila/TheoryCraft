@@ -19,7 +19,7 @@
 		<Size><AbsDimension x="47" y="20"/></Size>
 		<Scripts>
 			<OnLoad>
-				this:SetTextColor(1,1,1)
+				self:SetTextColor(1,1,1)
 			</OnLoad>
 			<OnTextChanged>
 				TheoryCraft_UpdateEditBox()
@@ -67,8 +67,8 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						this:SetBackdropColor(0, 0, 0);
-						this:SetBackdropBorderColor(0.4, 0.4, 0.4);
+						self:SetBackdropColor(0, 0, 0);
+						self:SetBackdropBorderColor(0.4, 0.4, 0.4);
 					</OnLoad>
 				</Scripts>
 			</Frame>
@@ -80,11 +80,11 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						this:SetFrameLevel(this:GetParent():GetFrameLevel() + 1);
+						self:SetFrameLevel(self:GetParent():GetFrameLevel() + 1);
 					</OnLoad>
 					<OnClick>
-						getglobal(this:GetParent():GetName().."_Text"):SetFocus();
-						this:Hide();
+						getglobal(self:GetParent():GetName().."_Text"):SetFocus();
+						self:Hide();
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -94,27 +94,27 @@
 			<Size><AbsDimension x="276" y="510"/></Size>
 			<Scripts>
 				<OnLoad>
-					this:SetHeight(this:GetParent():GetHeight());
-					this:SetWidth(this:GetParent():GetWidth());
+					self:SetHeight(self:GetParent():GetHeight());
+					self:SetWidth(self:GetParent():GetWidth());
 				</OnLoad>
 				<OnTextChanged>
-					local scrollBar = getglobal(this:GetParent():GetName().."ScrollBar")
-					this:GetParent():UpdateScrollChildRect();
+					local scrollBar = getglobal(self:GetParent():GetName().."ScrollBar")
+					self:GetParent():UpdateScrollChildRect();
 					local min, max = scrollBar:GetMinMaxValues();
-					if ( max > 0 and (this.max ~= max) ) then
-						this.max = max;
+					if ( max > 0 and (self.max ~= max) ) then
+						self.max = max;
 						scrollBar:SetValue(max);
 					end
-					if (this:GetParent().textChanged) then
-						this:GetParent().textChanged();
+					if (self:GetParent().textChanged) then
+						self:GetParent().textChanged();
 					end
 				</OnTextChanged>
 				<OnEscapePressed>
-					this:ClearFocus();
-					getglobal(this:GetParent():GetName().."_FocusButton"):Show();
+					self:ClearFocus();
+					getglobal(self:GetParent():GetName().."_FocusButton"):Show();
 				</OnEscapePressed>
 				<OnHide>
-					getglobal(this:GetParent():GetName().."_FocusButton"):Show();
+					getglobal(self:GetParent():GetName().."_FocusButton"):Show();
 				</OnHide>
 			</Scripts>
 			<FontString font="Fonts\ARIALN.TTF">
@@ -146,7 +146,7 @@
 		</Layers>
 		<Scripts>
 			<OnShow>
-				UIDropDownMenu_Initialize(this, TheoryCraft_InitDropDown)
+				UIDropDownMenu_Initialize(self, TheoryCraft_InitDropDown)
 			</OnShow>
 			<OnEnter>
 				TheoryCraft_CheckBoxShowDescription()
@@ -161,7 +161,7 @@
 		<Scripts>
 			<OnClick>
 				PanelTemplates_Tab_OnClick(TheoryCraft)
-				TheoryCraft_TabHandler(this:GetName())
+				TheoryCraft_TabHandler(self:GetName())
 			</OnClick>
 		</Scripts>
 	</CheckButton>
@@ -172,19 +172,19 @@
 		</HitRectInsets>
 		<Scripts>
 			<OnClick>
-				if ( this:GetChecked() ) then
+				if ( self:GetChecked() ) then
 					PlaySound("igMainMenuOptionCheckBoxOn");
 				else
 					PlaySound("igMainMenuOptionCheckBoxOff");
 				end
 			</OnClick>
 			<OnEnter>
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+				if ( self.tooltipText ) then
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
 				end
-				if ( this.tooltipRequirement ) then
-					GameTooltip:AddLine(this.tooltipRequirement, "", 1.0, 1.0, 1.0);
+				if ( self.tooltipRequirement ) then
+					GameTooltip:AddLine(self.tooltipRequirement, "", 1.0, 1.0, 1.0);
 					GameTooltip:Show();
 				end
 			</OnEnter>
@@ -202,7 +202,7 @@
 				PlaySound("igMainMenuOptionCheckBoxOn");
 			</OnClick>
 			<OnLoad> 
-				TheoryCraft_CheckBoxSetText()
+				TheoryCraft_CheckBoxSetText(self)
 			</OnLoad>
 			<OnClick> 
 				TheoryCraft_CheckBoxToggle()
@@ -218,19 +218,19 @@
 	<CheckButton name="TheoryCraftCheckBoxTemplate" inherits="UICheckButtonTemplate" virtual="true">
 		<Scripts>
 			<OnClick>
-				if ( this:GetChecked() ) then
+				if ( self:GetChecked() ) then
 					PlaySound("igMainMenuOptionCheckBoxOn");
 				else
 					PlaySound("igMainMenuOptionCheckBoxOff");
 				end
 			</OnClick>
 			<OnEnter>
-				if ( this.tooltipText ) then
-					GameTooltip:SetOwner(this, "ANCHOR_RIGHT");
-					GameTooltip:SetText(this.tooltipText, nil, nil, nil, nil, 1);
+				if ( self.tooltipText ) then
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
+					GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, 1);
 				end
-				if ( this.tooltipRequirement ) then
-					GameTooltip:AddLine(this.tooltipRequirement, "", 1.0, 1.0, 1.0);
+				if ( self.tooltipRequirement ) then
+					GameTooltip:AddLine(self.tooltipRequirement, "", 1.0, 1.0, 1.0);
 					GameTooltip:Show();
 				end
 			</OnEnter>
@@ -251,7 +251,7 @@
 				PlaySound("igMainMenuOptionCheckBoxOn");
 			</OnClick>
 			<OnLoad> 
-				TheoryCraft_CheckBoxSetText()
+				TheoryCraft_CheckBoxSetText(self)
 			</OnLoad>
 			<OnClick> 
 				TheoryCraft_CheckBoxToggle()
@@ -274,7 +274,7 @@
 				PlaySound("igMainMenuOptionCheckBoxOn");
 			</OnClick>
 			<OnLoad> 
-				TheoryCraft_CheckBoxSetText()
+				TheoryCraft_CheckBoxSetText(self)
 			</OnLoad>
 			<OnClick> 
 				TheoryCraft_CheckBoxToggle()
@@ -424,24 +424,24 @@
 		</Size>
 		<Scripts>
 			<OnMouseDown>
-				this:StartMoving()
+				self:StartMoving()
 			</OnMouseDown>
 			<OnDragStart>
-				this:StartMoving()
+				self:StartMoving()
 			</OnDragStart>
 			<OnDragStop>
-				this:StopMovingOrSizing()
+				self:StopMovingOrSizing()
 				TheoryCraft_UpdateDummyButtonText()
 			</OnDragStop>
 			<OnMouseUp>
-				this:StopMovingOrSizing()
+				self:StopMovingOrSizing()
 				TheoryCraft_UpdateDummyButtonText()
 			</OnMouseUp>
 			<OnLoad>
-				TheoryCraft_OnLoad()
+				TheoryCraft_OnLoad(self)
 			</OnLoad>
 			<OnEvent>
-				TheoryCraft_OnEvent()
+				TheoryCraft_OnEvent(self, event)
 			</OnEvent>
 		</Scripts>
 		<Frames>
@@ -891,7 +891,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Ar:  ")
+							getglobal(self:GetName().."Label"):SetText("Ar:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -906,7 +906,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Fi:  ")
+							getglobal(self:GetName().."Label"):SetText("Fi:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -921,7 +921,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Na:  ")
+							getglobal(self:GetName().."Label"):SetText("Na:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -936,7 +936,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Fr:  ")
+							getglobal(self:GetName().."Label"):SetText("Fr:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -951,7 +951,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Sh:  ")
+							getglobal(self:GetName().."Label"):SetText("Sh:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1055,7 +1055,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							this.textChanged = TheoryCraft_GenBoxEditChange
+							self.textChanged = TheoryCraft_GenBoxEditChange
 						</OnLoad>
 					</Scripts>
 				</ScrollFrame>
@@ -1080,17 +1080,17 @@
 							</Anchors>
 							<Scripts>
 								<OnMouseDown>
-									this:StartMoving()
+									self:StartMoving()
 								</OnMouseDown>
 								<OnDragStart>
-									this:StartMoving()
+									self:StartMoving()
 								</OnDragStart>
 								<OnDragStop>
-									this:StopMovingOrSizing()
+									self:StopMovingOrSizing()
 									TheoryCraft_UpdateButtonTextPos()
 								</OnDragStop>
 								<OnMouseUp>
-									this:StopMovingOrSizing()
+									self:StopMovingOrSizing()
 									TheoryCraft_UpdateButtonTextPos()
 								</OnMouseUp>
 							</Scripts>
@@ -1129,7 +1129,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Font Size:   ")
+							getglobal(self:GetName().."Label"):SetText("Font Size:   ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1144,7 +1144,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Path:   ")
+							getglobal(self:GetName().."Label"):SetText("Path:   ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1159,7 +1159,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("B:  ")
+							getglobal(self:GetName().."Label"):SetText("B:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1174,7 +1174,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("G:  ")
+							getglobal(self:GetName().."Label"):SetText("G:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1189,7 +1189,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Color:  R:  ")
+							getglobal(self:GetName().."Label"):SetText("Color:  R:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1204,7 +1204,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("B:  ")
+							getglobal(self:GetName().."Label"):SetText("B:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1219,7 +1219,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("G:  ")
+							getglobal(self:GetName().."Label"):SetText("G:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1234,7 +1234,7 @@
 					</Anchors>
 					<Scripts>
 						<OnLoad>
-							getglobal(this:GetName().."Label"):SetText("Col 2:  R:  ")
+							getglobal(self:GetName().."Label"):SetText("Col 2:  R:  ")
 						</OnLoad>
 					</Scripts>
 				</EditBox>
@@ -1813,21 +1813,21 @@
 	<GameTooltip name="TheoryCraftTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
 		<Scripts>
 			<OnLoad>
-				this:SetOwner(UIParent, "ANCHOR_NONE");
+				self:SetOwner(UIParent, "ANCHOR_NONE");
 			</OnLoad>	
 		</Scripts>
 	</GameTooltip>
 	<GameTooltip name="TCTooltip" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
 		<Scripts>
 			<OnLoad>
-				this:SetOwner(UIParent, "ANCHOR_NONE");
+				self:SetOwner(UIParent, "ANCHOR_NONE");
 			</OnLoad>	
 		</Scripts>
 	</GameTooltip>
 	<GameTooltip name="TCTooltip2" inherits="GameTooltipTemplate" parent="UIParent" hidden="true">
 		<Scripts>
 			<OnLoad>
-				this:SetOwner(UIParent, "ANCHOR_NONE");
+				self:SetOwner(UIParent, "ANCHOR_NONE");
 			</OnLoad>	
 		</Scripts>
 	</GameTooltip>

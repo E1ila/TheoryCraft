@@ -16,6 +16,16 @@ local function round(arg1, decplaces)
 	return string.format ("%."..decplaces.."f", arg1)
 end
 
+local function getspellscount() 
+	local numTabs = GetNumSpellTabs()
+	local count = 0
+	for i=1, numTabs do
+		local _, _, _, numSpells = GetSpellTabInfo(i)
+		count = count + numSpells
+	end 
+	return count 
+end 
+
 local function TheoryCraft_AddData(arg1, data, summeddata)
 	if data == nil then return end
 	summeddata["tmpincrease"] = summeddata["tmpincrease"] + (data[arg1.."modifier"] or 0)
@@ -120,14 +130,15 @@ local function getlifetap(returndata)
 	local spellrank = 1
 	local quit = 0
 	local found = 0
-	while (spellname) do
-		spellname, spellrank = GetSpellName(i2,BOOKTYPE_SPELL)
+	local spellCount = getspellscount()
+	while (spellname and i2 <= spellCount) do
+		spellname, spellrank = GetSpellInfo(i2,BOOKTYPE_SPELL)
 		spellrank = tonumber(findpattern(spellrank, "%d+"))
 		if (spellname == TheoryCraft_Locale.lifetap) then
 			found = 1
 		elseif (found == 1) then
 			TCTooltip:SetOwner(UIParent,"ANCHOR_NONE")
-			TCTooltip:SetSpell(i2-1,BOOKTYPE_SPELL)
+			TCTooltip:SetSpellBookItem(i2-1,BOOKTYPE_SPELL)
 			if (TCTooltip:NumLines() > 0) then
 				local description = getglobal("TCTooltipTextLeft"..TCTooltip:NumLines()):GetText()
 				returndata["lifetapHealth"] = findpattern(description, "%d+ health")
@@ -300,20 +311,20 @@ local function GetCritChance(critreport)
 	local critChance, iCritInfo, critNum
 	local remove = 0
 	local id = 1
-	local attackSpell = GetSpellName(id,BOOKTYPE_SPELL)
+	local attackSpell = GetSpellInfo(id,BOOKTYPE_SPELL)
 	if (attackSpell ~= TheoryCraft_Locale.Attack) then
 		name, texture, offset, numSpells = GetSpellTabInfo(1)
 		for i=1, numSpells do
-			if (GetSpellName(i,BOOKTYPE_SPELL) == TheoryCraft_Locale.Attack) then
+			if (GetSpellInfo(i,BOOKTYPE_SPELL) == TheoryCraft_Locale.Attack) then
 				id = i
 			end
 		end
 	end
-	if GetSpellName(id,BOOKTYPE_SPELL) ~= TheoryCraft_Locale.Attack then
+	if GetSpellInfo(id,BOOKTYPE_SPELL) ~= TheoryCraft_Locale.Attack then
 		return 0
 	end
 	TheoryCraftTooltip:SetOwner(UIParent,"ANCHOR_NONE")
-	TheoryCraftTooltip:SetSpell(id, BOOKTYPE_SPELL)
+	TheoryCraftTooltip:SetSpellBookItem(id, BOOKTYPE_SPELL)
 	local spellName = TheoryCraftTooltipTextLeft2:GetText()
 	if not spellName then return 0 end
 	iCritInfo = string.find(spellName, "%s")
@@ -457,7 +468,7 @@ function TheoryCraft_LoadStats(talents)
 	base, pos, neg = UnitRangedAttackPower("player")
 	TheoryCraft_Data.Stats["rangedattackpower"] = (TheoryCraft_Data.TargetBuffs["huntersmark"] or 0)+base+pos+neg-TheoryCraft_Data.Stats["agilityapranged"]*TheoryCraft_Data.Stats["agility"]
 
-	TheoryCraft_Data.Stats["totalmana"] = UnitManaMax("player")/talents["manamultiplierreal"]
+	TheoryCraft_Data.Stats["totalmana"] = UnitPowerMax("player")/talents["manamultiplierreal"]
 	TheoryCraft_Data.Stats["totalhealth"] = UnitHealthMax("player")/talents["healthmultiplierreal"]
 
 	TheoryCraft_Data.Stats["meleecritchance"] = TheoryCraft_Data.Stats["meleecritchance"]-TheoryCraft_Data.Stats["agility"]/TheoryCraft_Data.Stats["agipercrit"]
@@ -1326,7 +1337,7 @@ function TheoryCraft_GenerateTooltip(frame, spellname, spellrank, i2, showonbutt
 			end
 			local spellname2, spellrank2
 			while (true) do
-				spellname2, spellrank2 = GetSpellName(i2,BOOKTYPE_SPELL)
+				spellname2, spellrank2 = GetSpellInfo(i2,BOOKTYPE_SPELL)
 				if spellname2 == nil then return end
 				spellrank2 = tonumber(findpattern(spellrank2, "%d+"))
 				if spellrank2 == nil then spellrank2 = 0 end
@@ -1339,12 +1350,12 @@ function TheoryCraft_GenerateTooltip(frame, spellname, spellrank, i2, showonbutt
 			if (spellrank == nil) then
 				olddesc = getglobal(frame:GetName().."TextLeft"..frame:NumLines()):GetText()
 				while (spellname == spellname2) do
-					spellname2, spellrank = GetSpellName(i2,BOOKTYPE_SPELL)
+					spellname2, spellrank = GetSpellInfo(i2,BOOKTYPE_SPELL)
 					if spellname == nil then return end
 					spellrank = tonumber(findpattern(spellrank, "%d+"))
 					if spellrank == nil then spellrank = 0 end
 					TCTooltip:SetOwner(UIParent,"ANCHOR_NONE")
-					TCTooltip:SetSpell(i2,BOOKTYPE_SPELL)
+					TCTooltip:SetSpellBookItem(i2,BOOKTYPE_SPELL)
 					if (getglobal("TCTooltipTextLeft"..TCTooltip:NumLines())) and (getglobal("TCTooltipTextLeft"..TCTooltip:NumLines()):GetText() == olddesc) then
 						break
 					end
@@ -1364,7 +1375,7 @@ function TheoryCraft_GenerateTooltip(frame, spellname, spellrank, i2, showonbutt
 				macro = nil
 			end
 			while (true) do
-				spellname2, spellrank2 = GetSpellName(i2,BOOKTYPE_SPELL)
+				spellname2, spellrank2 = GetSpellInfo(i2,BOOKTYPE_SPELL)
 				if spellname2 == nil then return end
 				spellrank2 = tonumber(findpattern(spellrank2, "%d+"))
 				if spellrank2 == nil then spellrank2 = 0 end
@@ -1382,14 +1393,14 @@ function TheoryCraft_GenerateTooltip(frame, spellname, spellrank, i2, showonbutt
 				frame = TCTooltip
 			end
 			frame:SetOwner(UIParent,"ANCHOR_NONE")
-			frame:SetSpell(i2,BOOKTYPE_SPELL)
+			frame:SetSpellBookItem(i2,BOOKTYPE_SPELL)
 			if frame:NumLines() == 0 then return end
 		end
 	end
 	if spellname == TheoryCraft_Locale.MinMax.autoshotname then
 		local highestaimed, highestmulti, highestarcane
 		local i2 = 1
-		local spellname, spellrank = GetSpellName(i2,BOOKTYPE_SPELL)
+		local spellname, spellrank = GetSpellInfo(i2,BOOKTYPE_SPELL)
 		while (spellname) do
 			spellrank = tonumber(findpattern((spellrank or "0"), "%d+"))
 			if (spellname == TheoryCraft_Locale.MinMax.aimedshotname) and ((highestaimed == nil) or (highestaimed < spellrank)) then
@@ -1402,7 +1413,7 @@ function TheoryCraft_GenerateTooltip(frame, spellname, spellrank, i2, showonbutt
 				highestarcane = spellrank
 			end
 			i2 = i2 + 1
-			spellname, spellrank = GetSpellName(i2,BOOKTYPE_SPELL)
+			spellname, spellrank = GetSpellInfo(i2,BOOKTYPE_SPELL)
 		end
 		if (highestaimed) and (TheoryCraft_TooltipData[TheoryCraft_Locale.MinMax.aimedshotname.."("..highestaimed..")"] == nil) then
 			TheoryCraft_GenerateTooltip(TCTooltip2, TheoryCraft_Locale.MinMax.aimedshotname, highestaimed, nil, nil, nil, true)
@@ -1782,7 +1793,7 @@ function TheoryCraft_GetSpellDataByFrame(frame, force)
 		local data = TheoryCraft_GetSpellDataByName(string.sub(desc, 1, pos-1), tonumber(string.sub(desc, pos+1, string.len(desc)-1)), force, true)
 		if data == nil then return nil end
 		if data.spellnumber == nil then return nil end
-		frame:SetSpell(data.spellnumber,BOOKTYPE_SPELL)
+		frame:SetSpellBookItem(data.spellnumber,BOOKTYPE_SPELL)
 		return data
 	end
 	if TheoryCraft_TooltipData[desc] and TheoryCraft_TooltipData[desc].spellname then
@@ -1819,12 +1830,12 @@ function TheoryCraft_GetSpellDataByDescription(description, force)
 	local spellname, spellrank
 	local testdesc
 	while (true) do
-		spellname, spellrank = GetSpellName(i,BOOKTYPE_SPELL)
+		spellname, spellrank = GetSpellInfo(i,BOOKTYPE_SPELL)
 		if spellname == nil then break end
 		spellrank = tonumber(findpattern(spellrank, "%d+"))
 		if spellrank == nil then spellrank = 0 end
 		TCTooltip:SetOwner(UIParent,"ANCHOR_NONE")
-		TCTooltip:SetSpell(i,BOOKTYPE_SPELL)
+		TCTooltip:SetSpellBookItem(i,BOOKTYPE_SPELL)
 		testdesc = getglobal("TCTooltipTextLeft"..TCTooltip:NumLines()):GetText()
 		if testdesc == description then
 			TheoryCraft_GenerateTooltip(TCTooltip, spellname, spellrank, i, true)
